@@ -9,6 +9,8 @@ interface MenuCardProps {
 function MenuCard({ item }: MenuCardProps) {
   return (
     <div className="menu-card">
+      {/* The dish image */}
+      <img src={item.image} alt={item.name} className="card-image" />
       <div className="card-header">
         <span className="category-badge">{item.category}</span>
         {item.spicy && <span className="spicy-badge">🌶 Spicy</span>}
