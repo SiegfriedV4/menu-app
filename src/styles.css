@@ -2,16 +2,64 @@
 
 /* ── Will need to improve in the next iteration by adding some images. 
 This would be cool if it worked in tandem pulling images from an API. Menu's should be updated as well ── */
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* ── Theme variables ──────────────────────────────────────────────────────────
+   All colours are defined here as variables.
+   Light theme lives on :root (always active by default).
+   Dark theme lives on .dark — when that class is on the app div,
+   every var() below automatically picks up the dark values instead. */
+
+:root {
+  --bg: #f5f5f5;
+  --surface: #ffffff;
+  --surface-hover: #f8f8ff;
+  --text: #222222;
+  --text-muted: #666666;
+  --text-faint: #888888;
+  --accent: #4f46e5;
+  --accent-light: #ede9fe;
+  --accent-text: #4f46e5;
+  --border: #dddddd;
+  --border-section: #e5e7eb;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.12);
+  --spicy-bg: #fee2e2;
+  --spicy-text: #dc2626;
+  --heading: #1a1a2e;
+}
+
+.dark {
+  --bg: #0f0f1a;
+  --surface: #1e1e2e;
+  --surface-hover: #2a2a3e;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --accent: #818cf8;
+  --accent-light: #2e2b55;
+  --accent-text: #a5b4fc;
+  --border: #2a2a3e;
+  --border-section: #2a2a3e;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --spicy-bg: #3f1e1e;
+  --spicy-text: #f87171;
+  --heading: #e2e8f0;
+}
+
+/* ── Base ── */
+
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #f5f5f5;
-  color: #222;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
 }
 
 /* ── Page layout ── */
@@ -32,24 +80,43 @@ body {
 .app-header h1 {
   font-size: 36px;
   font-weight: 800;
-  color: #1a1a2e;
+  color: var(--heading);
   letter-spacing: -1px;
 }
 
 .app-header p {
-  color: #666;
+  color: var(--text-muted);
   margin-top: 6px;
   font-size: 15px;
+}
+
+/* ── Theme toggle button ── */
+
+.theme-btn {
+  margin-top: 12px;
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ── Filter bar ── */
 
 .filter-bar {
-  background: #fff;
+  background: var(--surface);
   border-radius: 12px;
   padding: 20px;
-  margin-bottom: 28px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -58,15 +125,21 @@ body {
 .search-input {
   width: 100%;
   padding: 10px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 15px;
   outline: none;
+  background: var(--bg);
+  color: var(--text);
   transition: border-color 0.2s;
 }
 
+.search-input::placeholder {
+  color: var(--text-faint);
+}
+
 .search-input:focus {
-  border-color: #4f46e5;
+  border-color: var(--accent);
 }
 
 .category-buttons {
@@ -77,48 +150,63 @@ body {
 
 .cat-btn {
   padding: 7px 18px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 20px;
-  background: #fff;
+  background: var(--surface);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
-  color: #444;
+  color: var(--text-muted);
 }
 
 .cat-btn:hover {
-  border-color: #4f46e5;
-  color: #4f46e5;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .cat-btn.active {
-  background: #4f46e5;
-  border-color: #4f46e5;
+  background: var(--accent);
+  border-color: var(--accent);
   color: #fff;
 }
 
 /* ── Sort bar ── */
+
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.sort-label {
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
 .sort-select {
   padding: 6px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 13px;
-  color: #444;
-  background: #fff;
+  color: var(--text);
+  background: var(--surface);
   cursor: pointer;
   outline: none;
+  transition: border-color 0.2s;
 }
 
 .sort-select:focus {
-  border-color: #4f46e5;
+  border-color: var(--accent);
 }
 
 /* ── Results count ── */
 
 .results-count {
   font-size: 13px;
-  color: #888;
+  color: var(--text-faint);
   margin-bottom: 16px;
 }
 
@@ -133,32 +221,30 @@ body {
 /* ── Menu card ── */
 
 .menu-card {
-  background: #fff;
+  background: var(--surface);
   border-radius: 12px;
-  overflow: hidden; /* keeps the image corners rounded */
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.3s;
 }
 
 .menu-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-md);
+  background: var(--surface-hover);
 }
 
-/* ── Card image — NEW ── */
+/* ── Card image ── */
 
-/* cover crops the image to fill the space without stretching */
 .card-image {
   width: 100%;
   height: 160px;
   object-fit: cover;
 }
 
-/* Padding wrapper so card content has breathing room below the image */
 .menu-card .card-header,
 .menu-card .item-name,
 .menu-card .item-description,
@@ -176,6 +262,7 @@ body {
   display: flex;
   gap: 8px;
   align-items: center;
+  padding-top: 4px;
 }
 
 .category-badge {
@@ -183,16 +270,16 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  background: #ede9fe;
-  color: #4f46e5;
+  background: var(--accent-light);
+  color: var(--accent-text);
   padding: 3px 10px;
   border-radius: 12px;
 }
 
 .spicy-badge {
   font-size: 11px;
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--spicy-bg);
+  color: var(--spicy-text);
   padding: 3px 10px;
   border-radius: 12px;
   font-weight: 600;
@@ -201,12 +288,12 @@ body {
 .item-name {
   font-size: 17px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: var(--heading);
 }
 
 .item-description {
   font-size: 13px;
-  color: #666;
+  color: var(--text-muted);
   line-height: 1.5;
   flex: 1;
 }
@@ -214,7 +301,7 @@ body {
 .item-price {
   font-size: 18px;
   font-weight: 800;
-  color: #4f46e5;
+  color: var(--accent);
 }
 
 /* ── No results ── */
@@ -222,7 +309,7 @@ body {
 .no-results {
   text-align: center;
   padding: 60px 20px;
-  color: #888;
+  color: var(--text-faint);
   font-size: 16px;
 }
 
@@ -232,44 +319,17 @@ body {
   margin-bottom: 12px;
 }
 
-/* Default = light theme */
-:root {
-  --bg: #f5f5f5;
-  --surface: #ffffff;
-  --text: #222222;
-  --text-muted: #666666;
-  --accent: #4f46e5;
-}
-
-/* Dark theme */
-.dark {
-  --bg: #40408e;
-  --surface: #2a2a3e;
-  --text: #f1f5f9;
-  --text-muted: #94a3b8;
-  --accent: #818cf8;
-}
-
-/* Before */
-body { background: #f5f5f5; }
-.menu-card { background: #ffffff; color: #222; }
-
-/* After */
-body { background: var(--bg); }
-.menu-card { background: var(--surface); color: var(--text); }
-
 /* ── Drinks section ── */
 
-/* Visually separates drinks from the food menu */
 .drinks-section {
   margin-top: 48px;
   padding-top: 32px;
-  border-top: 2px solid #e5e7eb;
+  border-top: 2px solid var(--border-section);
 }
 
 .drinks-title {
   font-size: 26px;
   font-weight: 800;
-  color: #1a1a2e;
+  color: var(--heading);
   margin-bottom: 16px;
 }
