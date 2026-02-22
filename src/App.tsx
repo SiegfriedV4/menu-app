@@ -1,18 +1,23 @@
 // src/App.tsx
 
 import { useState } from 'react';
-import type { Category, MenuItem } from './types';
+import type { Category, MenuItem, SortOrder } from './types';
 import { MENU_ITEMS } from './data';
 import Header from './components/Header';
 import FilterBar from './components/FilterBar';
+import SortBar from './components/SortBar';
 import ResultsCount from './components/ResultsCount';
 import MenuGrid from './components/MenuGrid';
+import DrinksSection from './components/DrinksSection';
 import './styles.css';
 
 export default function App() {
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All');
+
+  // New state for sorting — default is 'none'
+  const [sortOrder, setSortOrder] = useState<SortOrder>('none');
 
   // Need to go over themes and how they work?
   // Same pattern as activeCategory — just a boolean this time
@@ -23,6 +28,7 @@ export default function App() {
     setIsDark(prev => !prev);
   }
   
+  // the sorting logic — creates a new sorted array based on the filtered items and the selected sort order
   const filteredItems: MenuItem[] = MENU_ITEMS.filter((item: MenuItem) => {
     const matchesCategory: boolean =
       activeCategory === 'All' || item.category === activeCategory;
@@ -37,6 +43,14 @@ export default function App() {
     return matchesCategory && matchesSearch;
   });
 
+  const sortedItems: MenuItem[] = [...filteredItems].sort((a, b) => {
+    switch (sortOrder) {
+      case 'low-high':  return a.price - b.price;  // cheapest first
+      case 'high-low':  return b.price - a.price;  // most expensive first
+      default:          return 0;                  // 'none' — keep original order
+    }
+  });
+
   return (
     <div className={`app ${isDark ? 'dark' : ''}`}>
       <Header isDark={isDark} onToggle={toggleTheme} />
@@ -46,8 +60,12 @@ export default function App() {
         activeCategory={activeCategory}
         onCategoryChange={setActiveCategory}
       />
+
+      <SortBar sortOrder={sortOrder} onSortChange={setSortOrder} />
       <ResultsCount filtered={filteredItems.length} total={MENU_ITEMS.length} />
-      <MenuGrid items={filteredItems} searchQuery={searchQuery} />
+      <MenuGrid items={sortedItems} searchQuery={searchQuery} />
+
+      <DrinksSection />
     </div>
   );
 }
